@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>
+      <pre>
+        <h1>******************************** Google SignIn ***********************************</h1>
+  
+         -->fileName => api/auth/[...nextauth]/route.js
+    
+         import GoogleProvider from "next-auth/providers/google";
+         import NextAuth from "next-auth/next";
+
+         export const authOptions = {
+           providers: [
+             GoogleProvider({
+               clientId: process.env.GOOGLE_CLIENT_ID,
+               clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+               authorization: {
+                 params: {
+                   prompt: "consent",
+                   access_type: "offline",
+                   response_type: "code",
+                 },
+               },
+             }),
+           ],
+           secret: process.env.NEXTAUTH_SECRET,
+         };
+
+         const handler = NextAuth(authOptions);
+
+         export { handler as GET, handler as POST };
+
+
+         .env file ===>
+
+         GOOGLE_CLIENT_ID=1073479705127-03n1kfd0fhnbp57b3lf1qvigvb4ibiqq.apps.googleusercontent.com
+         GOOGLE_CLIENT_SECRET=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
+
+         NEXTAUTH_URL=http://localhost:3000
+
+         NEXTAUTH_SECRET=secret_text_for_nextauth
+
+
+         Provider.js file ===>(client component)
+
+         "use client";
+         import SessionProvider from "next-auth/react";
+
+         export const NextAuthProvider = ({ children, session }) => {
+           return <SessionProvider session={session}>{children}</SessionProvider>;
+         };
+      </pre>
+    </h2>
+    <h1>
+      ********************** CSS Responsive ************************ @media
+    </h1>
+    <h2>
+      <pre>
+            screen and (max-width: 768px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait){}</pre
+      >
+    </h2>
+  </body>
+</html>

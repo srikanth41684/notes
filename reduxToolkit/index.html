@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>
+      <pre>
+        <h1>Step-1 : -----------------------------></h1>
+            install redux-toolkit and react-redux
+            -> npm install @reduxjs/toolkit react-redux
+
+    <h1>Step-2 : -----------------------------></h1>
+        Create store file with configureStore
+
+        store.js:
+
+        import { configureStore } from '@reduxjs/toolkit'
+        import postsReducer from './postSlice'
+
+        export const store = configureStore({
+          reducer: {
+        	posts: postsReducer;
+          },
+        })
+
+    <h1>step-3 : -----------------------------></h1>
+        Provide the Redux Store to React
+
+        import { store } from './app/store'
+        import { Provider } from 'react-redux'
+
+        ReactDOM.render(
+          <Provider store={store}>
+            <App /> store in App.js
+          </Provider>,
+          document.getElementById('root')
+        )
+
+    <h1>step-4 : -----------------------------></h1>
+        Create a Redux State Slice
+
+        postSlice.js:
+
+        import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+        import axios from 'axios';
+
+        const initialState = {
+        	posts: null,
+        	loading: false,
+        	error: null,
+        }
+
+        export const fetchPosts = createAsyncThunk({})
+
+
+        const postSlice = createSlice({
+        	name: 'posts',
+        	initialState,
+        	reducer,
+        	extraReducer(builder) {
+        		builder.addCase(fetchPosts.pending, (state, action) => {
+        			state.loading = true;
+        		})
+        		.addCase(fetchPosts.fullfilled, (state, action) => {
+        			state.loading = false;
+        			state.posts = action.payload;
+        			state.error = null;
+        		})
+        		.addCase(fetchPosts.rejected, (state, action) => {
+        			state.loading = false;
+        			state.posts = null;
+        			state.error = state.error.message;
+        		})
+        	}
+        });
+
+        export default postSlice.reducer;
+
+<h1>step-5 : -----------------------------></h1>
+
+        -> access data in components
+
+        import {useDispatch, useSelector} from reducer/toolkit;
+        import {fetchPosts} from './postSlice';
+
+        const ProfileScreen = () => {
+          const posts = useSelector(state => state.posts.posts);
+          const loading = useSelector(state => state.posts.loading);
+          const error = useSelector(state => state.posts.error);
+        
+          const dispatch = useDispatch();
+        
+          useEffect(() => {
+            console.log('error---->', error);
+          }, [error]);
+      
+          useEffect(() => {
+            dispatch(fetchPosts());
+          }, [dispatch]);
+
+        }
+
+      </pre>
+    </h2>
+  </body>
+</html>

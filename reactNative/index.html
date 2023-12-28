@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>App Start ======> npx react-native start --reset-cache</h2>
+    <h2>run app ======> npx react-native run-android</h2>
+    <h2>
+      run in release mode ======> npx react-native run-android --mode release
+    </h2>
+    <br />
+    <h1>******************** AsyncStorage *************************</h1>
+
+    <h2>
+      <pre>
+        import AsyncStorage from '@react-native-async-storage/async-storage';
+
+        const useAsyncStorage = () => {
+            storeData = async (key, value) => {
+              try {
+                await AsyncStorage.setItem(key, value);
+              } catch (error) {
+                console.log(error);
+              }
+            };
+          
+            mergeData = async (key, value) => {
+              try {
+                await AsyncStorage.mergeItem(key, value);
+              } catch (error) {
+                console.log(error);
+              }
+            };
+          
+            getData = async key => {
+              // console.log('getData key---------->', key);
+              try {
+                const value = await AsyncStorage.getItem(key);
+                // console.log('getData value---------->', value);
+                return value;
+              } catch (error) {
+                console.log(error);
+                return null;
+              }
+            };
+          
+            removeData = async key => {
+              try {
+                const value = await AsyncStorage.removeItem(key);
+                return value;
+              } catch (error) {
+                console.log(error);
+                return null;
+              }
+            };
+          
+            clearAsyncStorage = async () => {
+              await AsyncStorage.clear();
+            };
+          
+            return {storeData, mergeData, getData, removeData, clearAsyncStorage};
+          };
+          
+          export default useAsyncStorage;
+        </pre
+      >
+    </h2>
+
+    <h1>
+      ************************ React-Native APK creation :
+      *******************************
+    </h1>
+    <h2>
+      <pre>
+            1. Go to android folder --> cd android
+    
+            2. Run ./gradlew assembleRelease
+                
+            3. You can find the generated APK at android/app/build/outputs/apk/release.
+                
+            4. release - Folder to terminal: right click then select open in integrated terminal.
+                
+            5. From release folder in terminal:  adb install app-release.apk
+        </pre
+      >
+    </h2>
+    <h1>.................API Calling...................</h1>
+    <h2>
+      <pre>
+        import axios from 'axios';
+
+        const url = '';
+
+        const useCreateRequest = () => {
+          // ****************************GET API CALLS STARTS HERE****************************
+        
+          const createGetRequest = async params => {
+            let requestURL = url + params;
+            console.log('createGetRequest requestURL---------->', requestURL);
+            return await axios.get(requestURL, {withCredentials: true});
+            // .then(res => {
+            //   console.log(
+            //     'returns response from createGetRequest method---------->',
+            //     res,
+            //   );
+            //   return res;
+            // })
+            // .catch(error => {
+            //   console.log(
+            //     'returns error from createGetRequest method---------->',
+            //     error,
+            //   );
+            //   return error;
+            // });
+          };
+      
+          const verifyMobileOtp = val => {
+            return createGetRequest('' + val);
+          };
+      
+          // ****************************POST API CALLS START HERE****************************
+      
+          const createPostRequest = async (params, data) => {
+            let requestURL = url + params;
+            console.log('createPostRequest requestURL---------->', requestURL);
+            // console.log('createPostRequest data---------->', data);
+            return await axios
+              .post(requestURL, data, {withCredentials: true})
+              .then(res => {
+                console.log(
+                  'returns response from createPostRequest method---------->',
+                  res,
+                );
+                return res;
+              })
+              .catch(error => {
+                console.log(
+                  'returns error from createPostRequest method---------->',
+                  error.response?.data,
+                );
+                return error.response?.data;
+              });
+          };
+      
+          // Method: Update account
+          const updateAccount = data => {
+            return createPostRequest('', data);
+          };
+      
+          return {
+            createGetRequest,
+            verifyMobileOtp,
+            createPostRequest,
+            updateAccount,
+          };
+        };
+
+      </pre>
+    </h2>
+    <h1>Search Input Logic :</h1>
+    <h2>
+      <pre>
+        const searchHandler = query => {
+            let newArr = [];
+            if (commObj.query !== '') {
+              commObj.compaigns.filter(item => {
+                if (item.name.toUpperCase().includes(query.toUpperCase())) {
+                  newArr.push(item);
+                }
+              });
+              setCommObj(prev => ({
+                ...prev,
+                filterData: newArr,
+                searchQuery: query,
+              }));
+            } else {
+              setCommObj(prev => ({
+                ...prev,
+                filterData: prev.compaigns,
+              }));
+            }
+          };
+      </pre>
+    </h2>
+  </body>
+</html>
